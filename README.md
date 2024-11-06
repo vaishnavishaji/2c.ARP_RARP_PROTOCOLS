@@ -18,7 +18,7 @@ stored.
 P
 ## PROGRAM - ARP
 ```
-
+client.py
 import socket 
 s=socket.socket() 
 s.bind(('localhost',8000)) 
@@ -31,25 +31,56 @@ while True:
                 c.send(address[ip].encode()) 
             except KeyError: 
                 c.send("Not Found".encode())
-```
 
-## OUPUT - ARP
-![366398577-abb108c8-b1aa-4cb3-a17f-066e916d4e29](https://github.com/user-attachments/assets/e57b7351-b7ce-4e76-8af8-6b797bce41b1)
-
-## PROGRAM - RARP
 ```
-import socket 
-s=socket.socket() 
-s.connect(('localhost',8000)) 
-while True: 
- ip=input("Enter logical Address : ") 
- s.send(ip.encode()) 
+```
+server.py
+import socket
+s=socket.socket()
+s.connect(('localhost',8000))
+while True:
+ ip=input("Enter logical Address : ")
+ s.send(ip.encode())
  print("MAC Address",s.recv(1024).decode())
 ```
 
 
+## OUPUT - ARP
+![Screenshot 2024-11-06 125146](https://github.com/user-attachments/assets/f871370c-73a1-48a8-9496-394282b17192)
+
+
+## PROGRAM - RARP
+```
+client.py
+import socket
+s=socket.socket()
+s.bind(('localhost',9000))
+s.listen(5)
+c,addr=s.accept()
+address={"6A:08:AA:C2":"192.168.1.100","8A:BC:E3:FA":"192.168.1.99"};
+while True:
+ ip=c.recv(1024).decode()
+ try:
+ c.send(address[ip].encode())
+ except KeyError:
+ c.send("Not Found".encode())
+```
+```
+server.py
+import socket
+s=socket.socket()
+s.connect(('localhost',9000))
+while True:
+ ip=input("Enter MAC Address : ")
+REG NO:
+ s.send(ip.encode())
+ print("Logical Address",s.recv(1024).decode())
+```
+
+
 ## OUPUT -RARP
-![366399046-2bcfde1b-9896-4a01-9c5a-384e6134ddce](https://github.com/user-attachments/assets/3a6390d6-3e20-4e86-a304-89f605c3447e)
+![Screenshot 2024-11-06 124821](https://github.com/user-attachments/assets/b8db8dbd-83d7-45fe-8b6b-8e1ada1cd551)
+
 
 
 ## RESULT
